@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Student Grades App</title>
+<style>
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: #f4f4f4;
+    padding: 30px;
+}
+.container {
+    background: white;
+    padding: 20px;
+    width: 400px;
+    margin: auto;
+    border-radius: 8px;
+}
+input, button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+}
+button {
+    background: #a88eb1;
+    color: white;
+    border: none;
+}
+.result {
+    margin-top: 20px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Student Grades Manager</h2>
+
+<input id="name" type="text" placeholder="Student name">
+<input id="grade" type="number" placeholder="Grade (1-10)">
+
+<button id="addBtn">Add Grade</button>
+<button id="finishBtn">Finish Student</button>
+
+<div class="result" id="output"></div>
+</div>
+
+<script>
+let grades = [];
+let students = [];
+
+const addBtn = document.getElementById("addBtn");
+const finishBtn = document.getElementById("finishBtn");
+
+addBtn.addEventListener("click", function(){
+    let grade = Number(document.getElementById("grade").value);
+
+    if(grade < 1 || grade > 10 || isNaN(grade)){
+        alert("Grade must be between 1 and 10");
+        return;
+    }
+
+    grades.push(grade);
+    alert("Grade added!");
+    document.getElementById("grade").value="";
+});
+
+finishBtn.addEventListener("click", function(){
+    let name = document.getElementById("name").value.trim();
+
+    if(name === "" || grades.length === 0){
+        alert("Enter name and grades first");
+        return;
+    }
+
+    let sum = 0;
+    for(let i=0; i<grades.length; i++){
+        sum += grades[i];
+    }
+
+    let average = sum / grades.length;
+    let note = "";
+    if(average < 5){
+        note = " - Не поминал";
+    }
+
+    students.push({
+        name: name,
+        avg: average.toFixed(2),
+        note: note
+    });
+
+    grades = [];
+    document.getElementById("name").value="";
+
+    showStudents();
+
+    // Ask if user wants to continue
+    let choice = confirm("Дали сакате да продолжите со внесување нови студенти?\nOK = Yes, Cancel = No");
+
+    if(!choice){
+        alert("Програмата заврши.");
+        // Disable inputs and buttons
+        document.getElementById("name").disabled = true;
+        document.getElementById("grade").disabled = true;
+        addBtn.disabled = true;
+        finishBtn.disabled = true;
+    }
+});
+
+function showStudents(){
+    let text = "";
+    for(let i=0; i<students.length; i++){
+        text += "Student: " + students[i].name +
+                " | Average: " + students[i].avg +
+                students[i].note + "<br>";
+    }
+    document.getElementById("output").innerHTML = text;
+}
+</script>
+</body>
+</html>
