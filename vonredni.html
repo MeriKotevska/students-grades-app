@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Student Subjects</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #a87ca3, #877aa4);
+    padding: 40px;
+}
+
+.container {
+    background: #f8f5ff;
+    padding: 30px;
+    width: 420px;
+    margin: auto;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+h2 {
+    color: #413442;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 12px;
+    width: 100%;
+    margin-top: 15px;
+    background: #695c67;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #514c5d;
+    transform: scale(1.03);
+}
+
+.result {
+    margin-top: 25px;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    color: #363136;
+    font-weight: 500;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>📊 Student Subjects</h2>
+
+<button onclick="presmetaj()">Calculate Results</button>
+
+<div class="result" id="output"></div>
+</div>
+
+<script>
+
+function vonredni(broj){
+    broj -= 5;
+
+    if(broj <= 0){
+        return 0;
+    }
+
+    return broj;
+}
+
+function presmetaj(){
+
+    let sp = 110;
+    let vp = 50;
+    let oop = 5;
+
+    sp = vonredni(sp);
+    vp = vonredni(vp);
+    oop = vonredni(oop);
+
+    let text = "";
+
+    if(sp === 0){
+        text += "📘 Strukturno programiranje: site studenti se prefrlija vonredno<br>";
+    } else {
+        text += "📘 Strukturno programiranje: " + sp + "<br>";
+    }
+
+    if(vp === 0){
+        text += "🌐 Veb programiranje: site studenti se prefrlija vonredno<br>";
+    } else {
+        text += "🌐 Veb programiranje: " + vp + "<br>";
+    }
+
+    if(oop === 0){
+        text += "💻 OOP: site studenti se prefrlija vonredno<br>";
+    } else {
+        text += "💻 OOP: " + oop + "<br>";
+    }
+
+    document.getElementById("output").innerHTML = text;
+}
+
+</script>
+
+</body>
+</html>
