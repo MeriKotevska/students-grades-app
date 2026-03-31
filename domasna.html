@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Notes App</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #2d262e;
+    padding: 30px;
+}
+
+.container {
+    width: 500px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+select, input, textarea, button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+}
+
+textarea {
+    height: 120px;
+}
+
+button {
+    background: #a17ea8;
+    color: white;
+    border: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Notes Manager</h2>
+
+<select id="notesList"></select>
+
+<input type="text" id="title">
+
+<textarea id="content"></textarea>
+
+<button id="saveBtn">Save Note</button>
+<button id="newBtn">Nova beleshka</button>
+<button id="resetBtn">Reset</button>
+
+</div>
+
+<script>
+
+// Load notes safely
+let notes = localStorage.getItem("notes");
+
+if(notes){
+    notes = JSON.parse(notes);
+} else {
+    notes = [{
+        title: "Lista na novi video igri: plan za nabavka",
+        content: ""
+    }];
+    localStorage.setItem("notes", JSON.stringify(notes));
+}
+
+// Show notes in dropdown
+function showNotes(){
+    let list = document.getElementById("notesList");
+    list.innerHTML = "";
+
+    for(let i = 0; i < notes.length; i++){
+        let option = document.createElement("option");
+        option.value = i;
+        option.textContent = notes[i].title;
+        list.appendChild(option);
+    }
+}
+
+// Load selected note
+function loadNote(){
+    let index = document.getElementById("notesList").value;
+
+    document.getElementById("title").value = notes[index].title;
+    document.getElementById("content").value = notes[index].content;
+}
+
+// Save note
+function saveNote(){
+    let index = document.getElementById("notesList").value;
+
+    notes[index].title = document.getElementById("title").value;
+    notes[index].content = document.getElementById("content").value;
+
+    localStorage.setItem("notes", JSON.stringify(notes));
+
+    showNotes();
+}
+
+// New note
+function newNote(){
+    let title = prompt("Vnesi naslov:");
+    let content = prompt("Vnesi sodrzina:");
+
+    if(title){
+        notes.push({
+            title: title,
+            content: content || ""
+        });
+
+        localStorage.setItem("notes", JSON.stringify(notes));
+
+        showNotes();
+
+        document.getElementById("notesList").value = notes.length - 1;
+        loadNote();
+    }
+}
+
+// Reset (for testing)
+function resetNotes(){
+    let defaultNotes = [{
+        title: "Lista na novi video igri: plan za nabavka",
+        content: ""
+    }];
+
+    localStorage.setItem("notes", JSON.stringify(defaultNotes));
+
+    location.reload();
+}
+
+
+// Events
+document.getElementById("notesList").addEventListener("change", loadNote);
+document.getElementById("saveBtn").addEventListener("click", saveNote);
+document.getElementById("newBtn").addEventListener("click", newNote);
+document.getElementById("resetBtn").addEventListener("click", resetNotes);
+
+// Initial load
+showNotes();
+document.getElementById("notesList").value = 0;
+loadNote();
+
+</script>
+
+</body>
+</html>
